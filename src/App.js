@@ -17,6 +17,13 @@ function App() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
   }, [todos])
 
+  function toggleTodo(id) {
+    const newTodos = [...todos] // spread operator. We're creating a copy of the todos array.
+    const todo = newTodos.find(todo => todo.id === id) // find() is an array method that returns the first element in the array that matches the condition we pass in. In this case, we're looking for the todo with the id that matches the id we passed in. We're storing that todo in a variable called todo.
+    todo.complete = !todo.complete // we're toggling the complete property of the todo we found.
+    setTodos(newTodos) // we're updating the todos array with the newTodos array.
+  }
+
   function handleAddTodo(e){      {/* handleAddTodo is a function that will be called when the user clicks the Add Todo button. */}
     const name = todoNameRef.current.value
     if (name === '') return
@@ -27,7 +34,7 @@ function App() {
   }
   return (
     <>
-    <TodoList todos={todos} />  {/* props are passed in as an object. The key is the name of the prop and the value is the value of the prop. */} 
+    <TodoList todos={todos} toggleTodo={toggleTodo} />  {/* props are passed in as an object. The key is the name of the prop and the value is the value of the prop. */} 
     <input ref={todoNameRef} type="text" />
     <button onClick={handleAddTodo}>Add Todo</button>
     <button>Clear Completed</button>
